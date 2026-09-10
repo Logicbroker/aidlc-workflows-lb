@@ -132,6 +132,11 @@ for the architecture and methodology.
 - `docs/` - user, harness-engineering, and developer documentation
 - `dist/` and `dist-release/` - generated, ignored local outputs
 
+This Logicbroker fork also provides the opt-in
+[LB service plugin](plugins/lb-service/README.md), with implementation and design
+routes plus a [reviewed inventory of convention sources](plugins/lb-service/docs/conventions.md).
+It is authored separately from the stock engine and is not installed by default.
+
 Edit `core/` or `harness/<name>/`, never generated `dist*` output.
 
 ## Development
