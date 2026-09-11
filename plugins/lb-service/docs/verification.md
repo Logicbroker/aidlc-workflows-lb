@@ -31,6 +31,15 @@ Darwin arm64 native binary. This does not replace ai-skills' AWS engine pin.
   stale update cache and lack of permanent host plugin registration for the test
   fixture. Offline tests do not prove provider authentication or service delivery.
 
+## Convention integration follow-up — 11 September 2026
+
+The 2026-09-11 follow-up removes the historical-folder lookup from practices
+discovery. The eight plugin tests / 359 assertions and deterministic packaging
+pass again. The companion shared-services convention port separately verifies
+the actual seven knowledge files and project rules through native 2.8.1 context
+delivery and refresh/plugin-sync preservation across all seven harnesses. Runtime
+discovery now uses project-owned knowledge and current component sources only.
+
 ## AWS 2.8.1 limitations observed
 
 1. Selecting only `aidlc` removes LB fragments and membership additions; the stage

@@ -21,9 +21,9 @@ and which are prototype, proposed or deferred. Inspect current implementation an
 CI before promoting a historical convention. A template is not proof of a live
 SDK, authorization, deployment or operational capability.
 
-If a repository retains an `aidlc-lb/` migration tree, consult only the specific
-policy or overlay needed for this service and its evidence matrix. Treat that
-material as candidate evidence; do not activate its agents, skills, adapters or
-workflow dispatch. Record adopted project facts in the active space's knowledge
-and affirmed practices through AWS's normal project-memory workflow. Do not copy
-a whole memory tree or change provider/model settings as part of this step.
+Use the active space's knowledge as the source of adopted repository conventions;
+the plugin has no dependency on a historical migration folder. If relevant
+knowledge is missing, inspect the current component and record the gap. Adopt
+confirmed facts and practices through AWS's normal project-knowledge and memory
+workflow. Do not import a historical agent/skill roster, copy a whole memory tree,
+or change provider/model settings as part of convention discovery.

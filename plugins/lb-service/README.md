@@ -31,10 +31,11 @@ Requirements, code generation and build/test also receive the active scope's
 contract, implementation and verification guidance through supported fragments.
 Scope-file prose alone is not delivered automatically by the engine.
 
-The retained shared-services `aidlc-lb/` directory contains useful source material.
-See the [convention inventory](docs/conventions.md) for exact sources, status and
-intended destinations. Project-specific SDK, identity, tenancy and stack decisions
-belong to the consuming repository's active-space knowledge and affirmed memory.
+The plugin reads adopted conventions from the active space's knowledge and memory.
+It does not look up a historical migration directory. See the
+[convention inventory](docs/conventions.md) for the reviewed source and destination
+map. Project-specific SDK, identity, tenancy and stack decisions belong to the
+consuming repository's active-space knowledge and affirmed memory.
 This plugin does not import the old agent roster, skills, adapters or intent records.
 
 AWS documents plugin memory projection as a future feature. In 2.8.1,

@@ -2,10 +2,11 @@
 
 Reviewed 2026-09-10. The source is the retained
 [`aidlc-lb/` tree in shared-services](https://github.com/Logicbroker/shared-services-aidlc/tree/2e79179680e8b4501909f638e5b1ca9a85ec6a95/aidlc-lb).
-It is migration evidence, not an active second framework. Its README's
-"Accepted AWS ports" describes the installation before the deliberate stock reset;
-those active ports have since been removed. Read source files and current code,
-not that historical status paragraph, to decide what to adopt now.
+It is migration evidence, not a runtime dependency. The source revision's README
+describes ports from before the deliberate stock reset. The current convention
+port belongs in the consuming project's active-space knowledge and memory, with
+current code evidence and prototype distinctions. The plugin's discovery step
+reads those active files; it does not consult the historical tree.
 
 ## What is present
 
