@@ -1,6 +1,6 @@
 # Logicbroker service plugin
 
-An optional service workflow for AWS AI-DLC 2.8.1. It adds two scopes using
+An optional service workflow tested with native AWS AI-DLC 2.8.1 and 2.8.2. It adds two scopes using
 existing AWS stages and agents, plus a Service Brainstorm stage. It does not
 change the engine, stock scopes, provider settings, model policy or project memory.
 
@@ -32,7 +32,8 @@ Installing this LB plugin does not install Compound Engineering or prove its
 host capabilities work. See [the integration contract](docs/brainstorming.md).
 
 Brainstorming explores alternatives and settles the service's outcome, then
-returns a requirements-only artifact to AIDLC's approval gate. AIDLC retains
+pauses for AIDLC Assumption Confirmation before writing a requirements-only
+artifact, then returns to AIDLC's final approval gate. AIDLC retains
 requirements, design, implementation, reviews and its learning loop. The
 implementation route and stock scopes do not acquire a brainstorming step.
 

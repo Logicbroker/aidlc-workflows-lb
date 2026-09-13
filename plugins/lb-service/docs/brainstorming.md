@@ -21,7 +21,7 @@ follow-up is separate from the initial LB plugin PR.
 | AIDLC | Workflow state, requirements and design artifacts, delivery planning, implementation, existing stage reviews, learning and human gates. |
 | ai-skills, in a later rollout | Optional installation, verified version selection, update/re-sync and diagnostics. |
 
-CE writes its artifact under its configured documentation root. The stage reads
+CE writes its artifact under its configured documentation root. After AIDLC Assumption Confirmation, the stage reads
 that exact returned path and writes `lb-service-brainstorm.md` under its own
 engine-resolved intent record. The snapshot preserves settled IDs and decisions,
 records its source, and lists questions deferred to design. Requirements analysis
@@ -43,7 +43,8 @@ lightweight brainstorm in chat; that does not satisfy this adapter's handoff.
 Upstream has **no documented brainstorm pipeline/return-to-caller flag** at the
 inspected revision. Its default handoff offers CE planning, document review,
 prototyping or autonomous shipping. The adapter passes an explicit constrained
-task that returns to AIDLC, and requires stopping if that constraint cannot be
+task that pauses for AIDLC Assumption Confirmation before CE artifact generation
+and returns to AIDLC afterward, and requires stopping if that constraint cannot be
 honored. Do not invent a supported upstream API or describe this as a completed
 live integration based solely on composition tests.
 
@@ -109,7 +110,7 @@ its Markdown artifact, return without CE planner/work/review/learning dispatch,
 AIDLC approval and requirements consuming the agreed decisions. Repeat with CE
 missing, an unsupported revision, a paused brainstorm, an unresolved product
 question and a revised artifact. Record actual results, not simulated user
-approval. This PR remains a draft pending that pilot.
+approval. This PR remains a draft pending the completed pilot.
 
 Refresh and selection have the existing AWS 2.8.1 limitations documented in
 [verification.md](verification.md): sync after engine refresh; selection retains
@@ -117,3 +118,45 @@ some plugin files/scope metadata, so it is not a full uninstall. Publish and
 verify the host package, CE installation/provenance and full rollback before
 adding this option to ai-skills. Existing workflows must finish before changing
 scope membership; this PR does not migrate or resume an active intent.
+
+
+## Follow-up testing: native 2.8.2 and live host
+
+The official AWS 2.8.2 macOS ARM64 binary and runtime archive were downloaded
+from the release and verified against the published SHA-256 digests. Both
+Claude and Codex disposable installations compose this plugin and route a fresh
+intent to Service Brainstorm with `gate: true`. Doctor reports Claude 64 passed,
+3 warnings, 0 failed; Codex 57 passed, 3 warnings, 0 failed.
+
+A separate 2.8.1 -> 2.8.2 refresh using the proposed ai-skills provider helper
+preserves project-memory and knowledge hashes for both harnesses. Saved direct
+provider settings reapply without drift; model-policy checks pass. Doctor after
+refresh: Claude 64 passed / 3 warnings / 0 failed; Codex 59 passed / 2 warnings /
+0 failed. This tests the helper against 2.8.2 assets, not a changed ai-skills
+release pin or an upgrade of a developer's actual installation.
+
+The live Claude test invoked the actual pinned `compound-engineering:ce-brainstorm`
+skill in a session-only plugin installation. The Codex test read the actual
+linked CE skill and AIDLC protocol. They used a disposable job-status service
+scenario, with no real service calls or deployment. The initial Claude run was
+restarted without user-level settings after an unrelated personal startup hook
+interfered. The bounded live runs did not complete a full brainstorm-to-requirements
+workflow.
+
+The test exposed a stage-instruction conflict: the original adapter wrote its
+handoff before AIDLC Assumption Confirmation, while the stage protocol requires
+confirmation before artifact generation. The corrected stage pauses before CE
+Phase 3, obtains real AIDLC summary confirmation, then permits the CE artifact
+and AIDLC handoff snapshot. A final AIDLC approval remains separate. Scripted
+fixture inputs do not count as either approval. The normal CE handoff and these
+checkpoints still require host-agent compliance; no unsupported native enforcement
+or CE pipeline API has been introduced.
+
+The corrected Claude resume exited successfully after three turns, re-read the
+updated installed stage and explicitly paused at Assumption Confirmation before the requirements artifact. It used the
+existing CE brainstorm session and labelled fixture inputs. No CE planner/work/
+review/learning/shipping skill was invoked in the observed trace, and no CE plan
+or AIDLC handoff artifact had been written at that checkpoint. This is a verified
+pause/ordering check, not a completed post-confirmation handoff or approved stage.
+The Codex run was bounded and stopped after reading the contracts/starting the
+pack-resolution step; its full live handoff remains unverified.

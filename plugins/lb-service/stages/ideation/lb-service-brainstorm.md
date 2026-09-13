@@ -61,9 +61,13 @@ caller task alongside the service request:
 
 > Brainstorm this service within the current AIDLC workflow. Explore the problem,
 > users, alternatives, scope, success criteria and failure behavior. Preserve
-> decisions already affirmed by the user. Produce a Markdown requirements-only
-> artifact, even if the result is small, and return its exact path. Keep its
-> stable decision and requirement IDs. After brainstorming, return to the AIDLC
+> decisions already affirmed by the user. After exploration, present the AIDLC
+> Assumption Confirmation and stop before CE Phase 3 writes any artifact. Wait
+> for the actual human confirmation through AIDLC's normal summary protocol;
+> supplied requirements, scripted test answers and CE readiness are not approval.
+> After confirmation, produce a Markdown requirements-only artifact, even if
+> small, and return its exact path. Keep stable decision and requirement IDs.
+> After brainstorming, return to the AIDLC
 > Service Brainstorm approval gate. Do not invoke ce-plan, ce-work, lfg,
 > ce-code-review, ce-compound or a prototype workflow. Do not implement, push,
 > deploy, alter AIDLC state or treat this request as approval of a plan.
@@ -79,7 +83,24 @@ answers or synthetic approvals. If the user explicitly chooses a different
 workflow, pause AIDLC and report the change of scope rather than marking this
 stage complete.
 
-### Step 3: Validate and Capture the Result
+### Step 3: Confirm Before Artifact Generation
+
+Before CE Phase 3 writes its requirements-only artifact, run the AIDLC
+Assumption Confirmation from the active stage protocol. Present the consolidated
+service outcome, actors, scope/non-goals, success/failure examples, settled
+decisions and explicit assumptions. Record unresolved product questions and
+technical questions deferred to design separately. Wait for the real human's
+confirmation; if they request a correction, revise the summary and confirm again.
+Use the normal engine summary/answer recording flow, not a manufactured receipt.
+Do not write either the CE artifact or the AIDLC handoff before this checkpoint.
+A fixture's supplied answers or the caller's permission to test do not approve
+that summary. A pause here is an incomplete stage, not a failed brainstorm.
+
+Once the human confirms, continue CE Phase 3 under the same constrained task.
+If CE cannot pause at this checkpoint and resume without launching another
+workflow, report the integration incompatibility and leave the stage incomplete.
+
+### Step 4: Validate and Capture the Result
 
 Read the exact returned Markdown artifact path, resolving it inside the current
 repository. Do not search for the newest plan or reuse an arbitrary previous
@@ -106,10 +127,11 @@ preserve and what remains to be investigated. Keep the original CE artifact;
 this record is the AIDLC handoff snapshot, not a second implementation plan.
 Do not write framework memory or promote a proposal into affirmed conventions.
 
-### Step 4: Confirm and Hand Back to AIDLC
+### Step 5: Hand Back for Final AIDLC Approval
 
-Present the settled service outcome, important tradeoffs and remaining design
-questions through the normal AIDLC summary-confirmation and approval flow.
+Present the written handoff and any remaining design questions through the
+normal AIDLC final approval flow. Preserve the earlier summary confirmation;
+if new evidence changes its assumptions, reconfirm before rewriting artifacts.
 A CE readiness check is not AIDLC human approval. Use only the engine's report
 protocol for completion or revision; never edit state checkboxes or audit files.
 After approval, let the engine select the next stage. The service route still
