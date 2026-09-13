@@ -11,15 +11,22 @@ runner: true
 # LB service with design
 
 Use for one independently delivered backend service with a clear outcome whose new
-business rules, data model, or NFR decisions require dedicated design. This route
-adds Functional Design, NFR Requirements, and NFR Design to the twelve-stage backend
-route. Keep formal requirements, domain/unit boundaries, contracts, and delivery
-planning so all required design inputs have producers.
+business rules, data model, or NFR decisions require dedicated design. This
+sixteen-stage route adds Service Brainstorm, Functional Design, NFR Requirements
+and NFR Design to the twelve-stage backend route. Keep formal requirements,
+domain/unit boundaries, contracts and delivery planning so all required design
+inputs have producers.
 
 Finish at verified implementation ready for review. Add infrastructure, CI creation,
 deployment, and operational stages when the actual outcome requires them; validate
 their required artifacts when composing that expanded plan. Market discovery, UI
 mockups, team formation, and product-wide planning are outside this profile.
+
+Service Brainstorm uses the separately installed, verified Compound Engineering
+`ce-brainstorm` skill on Claude or Codex. It explores WHAT to build, writes a
+requirements-only handoff and returns to AIDLC. AIDLC retains all later planning,
+review, implementation and learning. If that capability is unavailable or the
+brainstorm is paused, stop rather than skipping it.
 
 Change authoritative contracts first, regenerate transport, keep business behavior
 handwritten, and run the component's declared verification and existing CI. Preserve
