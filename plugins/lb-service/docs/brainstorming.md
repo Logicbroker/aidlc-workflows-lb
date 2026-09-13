@@ -74,6 +74,12 @@ replacement inputs explicitly rather than pretend brainstorming happened.
 
 ## Verification and rollout
 
+The latest [2.8.1 live acceptance pilot](brainstorm-pilot-2026-09-13.md)
+generated both documents after summary confirmation, but failed their semantic
+consistency check. It also exposed runtime/protocol issues. No final approval
+or requirements consumption was attempted with that handoff. Keep this PR in
+draft; the earlier structural checks below do not supersede those findings.
+
 The plugin test exercises all seven authored harness projections for graph
 composition: correct 12/16-stage membership, no new executions in stock routes,
 ordering before requirements, idempotent composition, disabled-stage selection,
