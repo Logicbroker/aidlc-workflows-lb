@@ -11,7 +11,8 @@
   "aidlc": {
     "contributes": {
       "overlays": "contributions/",
-      "scopes": "scopes/"
+      "scopes": "scopes/",
+      "stages": "stages/"
     }
   }
 }

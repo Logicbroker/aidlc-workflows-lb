@@ -1,3 +1,7 @@
+> Baseline evidence below describes the original 12/15-stage plugin. The
+> brainstorming follow-up changes the design route to 16 stages; its separate
+> results and limitations are recorded in [brainstorming.md](brainstorming.md).
+
 # Verification — 10 September 2026
 
 The plugin is authored on the organization's main branch at upstream commit

@@ -1,18 +1,18 @@
 # Logicbroker service plugin
 
-An optional service workflow for AWS AI-DLC 2.8.1. It adds two scopes using
-existing AWS stages and agents. It does not change the engine, stock scopes,
-provider settings, model policy or project memory.
+An optional service workflow tested with native AWS AI-DLC 2.8.1 and 2.8.2. It adds two scopes using
+existing AWS stages and agents, plus a Service Brainstorm stage. It does not
+change the engine, stock scopes, provider settings, model policy or project memory.
 
 | Scope | Stages | Use when |
 | --- | --- | --- |
 | `lb-service-implementation` | 12 | One independently delivered service uses established business and platform patterns. |
-| `lb-service-design` | 15 | The service needs dedicated functional, data-model or nonfunctional design. |
+| `lb-service-design` | 16 | Brainstorm the service outcome, then perform dedicated functional, data-model or nonfunctional design. Claude/Codex only for brainstorming. |
 
 The implementation route includes initialization, reverse engineering, practices
 discovery, requirements, domain design, units, contract design, delivery planning,
-code generation, and build/test. The design route also includes functional design,
-NFR requirements and NFR design. Initialization accounts for three stages.
+code generation, and build/test. The design route first runs Service Brainstorm, then also includes functional
+design, NFR requirements and NFR design. Initialization accounts for three stages.
 
 Both finish at verified implementation ready for review. A request to deploy also
 needs the relevant Operation stages and their prerequisites in its composed plan.
@@ -21,6 +21,21 @@ Standard depth/test strategy and the walking skeleton are enabled. Stage review
 classes, human gates, plan approval and agent model/effort defaults remain AWS's;
 the plugin sets no review cap or memory tier cap. The stock default scope remains
 unchanged; select an LB scope explicitly.
+
+## Compound Engineering brainstorming
+
+The design route requires the separately installed Compound Engineering
+`ce-brainstorm` skill, inspected at version **3.25.0**, source commit
+`44d65ad64a0ac8e542eabee31ce031a7aeb41b28`. The integration is limited to Claude
+and Codex; other harnesses can compose the files but must stop this stage.
+Installing this LB plugin does not install Compound Engineering or prove its
+host capabilities work. See [the integration contract](docs/brainstorming.md).
+
+Brainstorming explores alternatives and settles the service's outcome, then
+pauses for AIDLC Assumption Confirmation before writing a requirements-only
+artifact, then returns to AIDLC's final approval gate. AIDLC retains
+requirements, design, implementation, reviews and its learning loop. The
+implementation route and stock scopes do not acquire a brainstorming step.
 
 ## Conventions
 

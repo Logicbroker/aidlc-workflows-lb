@@ -17,7 +17,7 @@ const implementation = [
 ];
 const routes: Record<string, string[]> = {
   "lb-service-implementation": implementation,
-  "lb-service-design": [...implementation, "functional-design", "nfr-requirements", "nfr-design"],
+  "lb-service-design": [...implementation, "lb-service-brainstorm", "functional-design", "nfr-requirements", "nfr-design"],
 };
 type Grid = Record<string, { stages: Record<string, string> }>;
 
@@ -40,7 +40,11 @@ function grid(project: string, leaf: string): Grid {
 
 function verifyRoutes(value: Grid, stock: Grid): void {
   expect(Object.keys(value).sort()).toEqual([...Object.keys(stock), ...Object.keys(routes)].sort());
-  for (const [scope, baseline] of Object.entries(stock)) expect(value[scope]).toEqual(baseline);
+  for (const [scope, baseline] of Object.entries(stock)) {
+    const { "lb-service-brainstorm": brainstorm, ...stages } = value[scope].stages;
+    expect(brainstorm).toBe("SKIP");
+    expect({ ...value[scope], stages }).toEqual(baseline);
+  }
   for (const [scope, stages] of Object.entries(routes)) {
     const actual = Object.entries(value[scope].stages)
       .filter(([, action]) => action === "EXECUTE").map(([slug]) => slug).sort();
@@ -81,6 +85,20 @@ describe("LB service plugin", () => {
       };
       checkDrops(fixture.dropLogs);
       verifyRoutes(grid(project, leaf), stockGrid);
+      const graph = JSON.parse(readFileSync(join(project, leaf, "tools/data/stage-graph.json"), "utf8"));
+      const brainstorm = graph.find((stage: { slug: string }) => stage.slug === "lb-service-brainstorm");
+      const requirements = graph.find((stage: { slug: string }) => stage.slug === "requirements-analysis");
+      expect(brainstorm.phase).toBe("ideation");
+      expect(brainstorm.mode).toBe("inline");
+      expect(brainstorm.summary_confirmation).toBe("required");
+      expect(brainstorm.requires_stage).toEqual(["state-init"]);
+      expect(Number(brainstorm.number)).toBeLessThan(Number(requirements.number));
+      expect(requirements.consumes).toContainEqual({ artifact: "lb-service-brainstorm", required: false });
+      expect(grid(project, leaf)["lb-service-implementation"].stages["lb-service-brainstorm"]).toBe("SKIP");
+      const stageText = readFileSync(join(stages, "ideation/lb-service-brainstorm.md"), "utf8");
+      expect(stageText).toContain("ce-brainstorm");
+      expect(stageText).not.toContain("{{HARNESS_DIR}}");
+      expect(stageText).not.toContain("{{INVOKE}}");
       const runnerArgs = [join(project, leaf, "tools/aidlc-runner-gen.ts"), "scopes"];
       const runnerOptions = {
         cwd: project,
@@ -126,8 +144,15 @@ describe("LB service plugin", () => {
       select("aidlc");
       // AWS retains plugin grid rows as composed-scope metadata after selection.
       // Verify the stock routes and actual stage-source removal independently.
-      for (const [scope, baseline] of Object.entries(stockGrid)) expect(grid(project, leaf)[scope]).toEqual(baseline);
-      expect(snapshot(stages)).toEqual(stockStages);
+      for (const [scope, baseline] of Object.entries(stockGrid)) {
+        const current = grid(project, leaf)[scope];
+        const { "lb-service-brainstorm": _brainstorm, ...remaining } = current.stages;
+        expect({ ...current, stages: remaining }).toEqual(baseline);
+      }
+      const disabledStages = snapshot(stages);
+      for (const [path, hash] of Object.entries(stockStages)) expect(disabledStages[path]).toBe(hash);
+      const disabledGraph = JSON.parse(readFileSync(join(project, leaf, "tools/data/stage-graph.json"), "utf8"));
+      expect(disabledGraph.find((stage: { slug: string }) => stage.slug === "lb-service-brainstorm").enabled).toBe(false);
       select("aidlc,lb-service");
       composePluginFixture({ plugin: "lb-service", harness, projectDir: project, pluginBuilt: fixture.pluginBuilt, copyInstall: false });
       verifyRoutes(grid(project, leaf), stockGrid);
@@ -135,6 +160,27 @@ describe("LB service plugin", () => {
       expect(snapshot(memory)).toEqual(memoryBefore);
       expect(snapshot(knowledge)).toEqual(knowledgeBefore);
       expect(snapshot(join(project, leaf, "agents"))).toEqual(agentsBefore);
+
+      const init = spawnSync(process.execPath, [join(project, leaf, "tools/aidlc-utility.ts"),
+        "intent-create", "--scope", "lb-service-design", "--project-dir", project], {
+        cwd: project, env, encoding: "utf8", timeout: 30_000,
+      });
+      expect(init.status, init.stdout + init.stderr).toBe(0);
+      const orchestrate = (args: string[]) => {
+        const result = spawnSync(process.execPath, [join(project, leaf, "tools/aidlc-orchestrate.ts"), ...args], {
+          cwd: project, env, encoding: "utf8", timeout: 30_000,
+        });
+        expect(result.status, result.stdout + result.stderr).toBe(0);
+        return JSON.parse(result.stdout);
+      };
+      let directive = orchestrate(["next", "--scope", "lb-service-design"]);
+      for (let part = 0; part < 8 && directive.kind === "load-steering"; part++) {
+        directive = orchestrate(["continue", directive.continue_token]);
+      }
+      expect(directive.kind).toBe("run-stage");
+      expect(directive.stage).toBe("lb-service-brainstorm");
+      expect(directive.gate).toBe(true);
+      expect(directive.next_stage).not.toBeNull();
     }, 120_000);
   }
 });
