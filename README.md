@@ -124,7 +124,7 @@ for the architecture and methodology.
 ## Repository Layout
 
 - `core/` - hand-authored, harness-neutral methodology and engine
-- `core/tools/` - 68 aidlc-*.ts engine and authoring tools
+- `core/tools/` - 69 aidlc-*.ts engine and authoring tools
 - `harness/<name>/` - thin, harness-specific manifests and integrations
 - `plugins/<name>/` - optional AIDLC plugins
 - `scripts/` - packaging, binary, installer, and release tooling
@@ -136,6 +136,11 @@ This Logicbroker fork also provides the opt-in
 [LB service plugin](plugins/lb-service/README.md), with implementation and design
 routes plus a [reviewed inventory of convention sources](plugins/lb-service/docs/conventions.md).
 It is authored separately from the stock engine and is not installed by default.
+
+The fork consumes official AWS native engine assets. Its stable and scheduled
+preview engine publication jobs run only in `awslabs/aidlc-workflows`; LB plugin
+packages are published separately. ai-skills pins the exact upstream release
+commit contained here, without creating a duplicate fork engine release.
 
 Edit `core/` or `harness/<name>/`, never generated `dist*` output.
 
