@@ -124,7 +124,7 @@ jobs:
 
   test:
     name: Release tests
-    if: ${{ always() }}
+    if: ${{ github.repository == 'awslabs/aidlc-workflows' && always() }}
     needs: [test_smoke, test_unit, test_deep]
     runs-on: ubuntu-latest
     steps:
@@ -652,7 +652,7 @@ jobs:
 
   release-result:
     name: Release result
-    if: ${{ !cancelled() }}
+    if: ${{ github.repository == 'awslabs/aidlc-workflows' && !cancelled() }}
     needs: [validate, release]
     runs-on: ubuntu-latest
     steps:
