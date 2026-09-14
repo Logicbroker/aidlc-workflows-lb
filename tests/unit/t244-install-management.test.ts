@@ -2004,7 +2004,9 @@ describe("t244 Windows and completion release surfaces", () => {
       "bun tests/run-tests.ts --integration --e2e --no-llm --parallel 8",
     );
     const releaseTests = workflowJob(workflow, "test");
-    expect(releaseTests).toContain(`if: \${{ always() }}`);
+    expect(releaseTests).toContain(
+      `if: \${{ github.repository == 'awslabs/aidlc-workflows' && always() }}`,
+    );
     expect(releaseTests).toContain("needs: [test_smoke, test_unit, test_deep]");
     expect(releaseTests).toContain('test "$SMOKE_RESULT" = "success"');
     expect(releaseTests).toContain('test "$UNIT_RESULT" = "success"');
