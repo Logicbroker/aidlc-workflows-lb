@@ -16,6 +16,8 @@ concurrency:
 
 jobs:
   validate:
+    # The LB fork consumes AWS native releases; it publishes only its separate plugins.
+    if: github.repository == 'awslabs/aidlc-workflows'
     runs-on: ubuntu-latest
     permissions:
       contents: read
