@@ -1,7 +1,7 @@
 # Logicbroker service plugin
 
-An optional service workflow for AWS AI-DLC 2.8.1. It adds two scopes using
-existing AWS stages and agents. It does not change the engine, stock scopes,
+An optional service workflow tested with AWS AI-DLC 2.8.1, 2.8.2 and 2.9.0.
+It adds two scopes using existing AWS stages and agents. It does not change the engine, stock scopes,
 provider settings, model policy or project memory.
 
 | Scope | Stages | Use when |
@@ -38,9 +38,11 @@ map. Project-specific SDK, identity, tenancy and stack decisions belong to the
 consuming repository's active-space knowledge and affirmed memory.
 This plugin does not import the old agent roster, skills, adapters or intent records.
 
-AWS documents plugin memory projection as a future feature. In 2.8.1,
-`contributes.memory` is rejected and plugin packaging does not populate project
-knowledge. There is no release date in the versioned documentation. Use the
+AWS 2.9.0 still defers plugin memory projection: `contributes.memory` is
+rejected. Plugin methodology knowledge can be projected into harness knowledge,
+but project/space knowledge remains user-owned and is not populated by a plugin.
+This LB package ships neither memory nor knowledge payloads. There is no release
+date for memory projection in the versioned documentation. Use the
 [supported project knowledge paths](../../docs/harness-engineering/07-team-knowledge.md)
 for repository conventions; do not claim that a plugin install has installed them.
 
@@ -112,6 +114,8 @@ scripts, new dependency edges or generated-file patches are needed.
 
 See [verification results and runtime limitations](docs/verification.md).
 
-The fork's main branch contains upstream fixes after tag `v2.8.1`; this plugin's
-release compatibility is checked separately against the published 2.8.1 native
-runtime. Do not substitute the fork's moving main branch for ai-skills' engine pin.
+The [fork release definition](../../distribution/README.md) now owns engine and
+plugin compatibility together. The existing published 0.1.0 package is tested
+against the official 2.9.0 runtime; its original 2.8.1 build provenance is retained.
+See [2.9.0 verification](../../distribution/validation-2.9.0.md). Do not substitute
+the moving main branch for the immutable release definition consumed by ai-skills.
