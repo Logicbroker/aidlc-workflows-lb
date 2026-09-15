@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "release": "2.9.0-lb.1",
+  "engine": {
+    "repository": "awslabs/aidlc-workflows",
+    "release": "v2.9.0",
+    "version": "2.9.0",
+    "source_commit": "22f5d1b15a064c9ae80046e5b1761d5877e2f69f",
+    "runtime_asset": "aidlc-runtime-2.9.0.tar.gz",
+    "checksums": {
+      "version.json": "a07d4bc0018f6d08cd077f750d798de29dc77c73542aabc72f19ab52d21c6af2",
+      "aidlc-darwin-arm64": "aa3a661967fd246ec25e2c9bca7c22eada756e07d0e3381cb8a2b51288c2a1b2",
+      "aidlc-darwin-x64": "97af51c46a0dc013eec82af3a176b900c460c622d7edfb43fa63344e0ce583f3",
+      "aidlc-linux-arm64": "0863c54bfaccc695097a6e003ea405e7983e080261a327efd91335578f742ee5",
+      "aidlc-linux-arm64-musl": "66a2b29c1b873a3f21506baed809c30f0ddd22b0248f5475241c9ba795e6c989",
+      "aidlc-linux-x64": "635e779f25b255ef5de6b13023479768cc2d86a73e48b77e932ab26d80fb390c",
+      "aidlc-linux-x64-musl": "9ec0a1a6b16bd7daa70422edc652d114030f00a7dacb7954170a2cdd689ad9d3",
+      "aidlc-runtime-2.9.0.tar.gz": "e66e864ac4c29f30024c32cab579eea3e0142a303596d2192b1c88b4ad69b25b",
+      "aidlc-windows-x64.exe": "2b60793aded71e7ca79217a5f80c90c5aa4ad3eff2d664f54f571571f9c31353",
+      "install.ps1": "97ff013f2341645f79afb6672399bb434e0babcaba9af1a93bd84b5582eefdea",
+      "install.sh": "a3f09746af9be430a6ea623f6aa297e2e1331707fdf2c0b066830669e2ffea76",
+      "checksums.txt": "1a8ad281f71854a5c5cbe062b03810f29b18e41dcd2248a52cce0ef99e7d4fcc",
+      "aidlc-release.intoto.jsonl": "53ed8a35f7396830b5a97187ede6c82d8d3299daf575103769b7d883e3bfceb1"
+    }
+  },
+  "plugins": {
+    "lb-service": {
+      "repository": "Logicbroker/aidlc-workflows-lb",
+      "release": "lb-service-v0.1.0",
+      "version": "0.1.0",
+      "marketplace": "logicbroker-aidlc-service",
+      "source_commit": "d0d8231404880abbe6181f060cbaa723a29d034c",
+      "engine_version": "2.8.1",
+      "assets": {
+        "claude": {
+          "name": "lb-service-0.1.0-claude.tar.gz",
+          "sha256": "be8a29a3d918fa8a88b338931a4d163b7351df85bdaa04a60a2a4ae8406b6d9c",
+          "manifest_sha256": "8c7580d42dc58104b4eeb72505408d75f7a7bacf32c687c8bab97f45a3458e6b"
+        },
+        "codex": {
+          "name": "lb-service-0.1.0-codex.tar.gz",
+          "sha256": "6237806eea1ddce5effef95a469bf63180d606cbfa9edd317f6bd3197ac48bd4",
+          "manifest_sha256": "248937e378da24eb6f7c4689c0b7693861ec5541710fe62350d59e3e30d7bd27"
+        }
+      },
+      "compatible_engine_versions": [
+        "2.8.1",
+        "2.8.2",
+        "2.9.0"
+      ]
+    }
+  },
+  "profiles": {
+    "stock": {
+      "plugins": []
+    },
+    "lb-service": {
+      "plugins": [
+        "lb-service"
+      ],
+      "harnesses": [
+        "claude",
+        "codex"
+      ],
+      "scopes": [
+        "lb-service-implementation",
+        "lb-service-design"
+      ]
+    }
+  }
+}

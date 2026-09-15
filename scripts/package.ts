@@ -136,9 +136,9 @@ if (TIER_CAP) {
 
 // The version stamped into every projected aidlc-version.ts copy and projection
 // stamp. Unset means the source version. A release build sets AIDLC_BUILD_VERSION
-// to a preview id derived from the source version; the source tree is never
-// edited. Honoured in --check mode too, so the two-build determinism guard
-// measures the same stamped projection the release will ship.
+// to a next-patch preview id derived from the current source version; the source
+// tree is never edited. Honoured in --check mode too, so the two-build
+// determinism guard measures the same stamped projection the release will ship.
 const BUILD_VERSION = releaseBuildVersion();
 if (BUILD_VERSION !== AIDLC_VERSION) {
   console.error(`[version] stamping projections with ${BUILD_VERSION_ENV}=${BUILD_VERSION}`);
@@ -1178,16 +1178,15 @@ function rewriteNativeInvocations(
       (_match, verb: string) =>
         `${trustedCommand("workspace")} ${verb === "codekb-path" ? "codekb" : verb}`,
     );
-    // The per-intent Change Control flip lives under the `config` noun in the
-    // native dispatcher (`config set change-control <value>`), so its direct
-    // utility invocation is rewritten verb-aware for the same reason.
-    const changeControlUtilityPattern = new RegExp(
-      String.raw`\bbun\s+${projectPrefix}${harnessDir}/tools/aidlc-utility\.ts${suffix}\s+change-control\b`,
+    // Settings share one utility transaction; project its first setting onto
+    // the dispatcher's config noun and preserve all trailing flags/selectors.
+    const configUtilityPattern = new RegExp(
+      String.raw`\bbun\s+${projectPrefix}${harnessDir}/tools/aidlc-utility\.ts${suffix}\s+config-change\s+--(depth|test-strategy|review|change-control|sensors|learnings|summary-confirmation)\b`,
       "gi",
     );
     value = value.replace(
-      changeControlUtilityPattern,
-      () => trustedCommand("config set change-control"),
+      configUtilityPattern,
+      (_match, key: string) => trustedCommand(`config set ${key}`),
     );
     value = value.replace(toolPattern, (_match, delegate: string | undefined) =>
       delegate ? trustedCommand(delegate) : TRUSTED_COMMAND_PREFIX
